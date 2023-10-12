@@ -23,14 +23,14 @@ const create = catchAsync(async (req, res) => {
 });
 
 const query = catchAsync(async (req, res) => {
-  const filter = {};
+  const filter = pick(req.query, ['userId']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await postService.query(filter, options);
   res.status(httpStatus.OK).send(result);
 });
 
 const getOne = catchAsync(async (req, res) => {
-  const item = await postService.getOne({ _id: req.params.id });
+  const item = await postService.getOne({ userId: req.user.id, _id: req.params.id });
   if (!item) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
   }

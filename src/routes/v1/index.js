@@ -7,6 +7,7 @@ const fileRoute = require('./file.route');
 const chatRoute = require('./chat.route');
 const postRoute = require('./post.route');
 const commentRoute = require('./comment.route');
+const likeRoute = require('./like.route');
 const i18n = require('../../config/i18n');
 
 const router = express.Router();
@@ -48,6 +49,10 @@ const defaultRoutes = [
   {
     path: '/comment',
     route: commentRoute,
+  },
+  {
+    path: '/like',
+    route: likeRoute,
   },
 ];
 
