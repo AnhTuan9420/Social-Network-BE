@@ -50,6 +50,30 @@ const paginate = (schema) => {
       });
     }
 
+    if (options.populateSelect) {
+      options.populateSelect.path.split(', ').forEach((populateOption) => {
+        const condition = options.populateSelect.select.split(', ');
+        const selectCondition = [];
+
+        condition.forEach((element) => {
+          const check = element.split('.');
+          if (check[0] === populateOption) {
+            selectCondition.push(check[1]);
+          }
+        });
+
+        const stringSelect = selectCondition.join(' ');
+        docsPromise = docsPromise.populate({
+          path: populateOption,
+          select: stringSelect,
+        });
+      });
+    }
+
+    if (options.select) {
+      docsPromise = docsPromise.select(options.select);
+    }
+
     docsPromise = docsPromise.exec();
 
     return Promise.all([countPromise, docsPromise]).then((values) => {

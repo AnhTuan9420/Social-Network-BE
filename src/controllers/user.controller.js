@@ -17,19 +17,7 @@ const getOne = catchAsync(async (req, res) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
   }
-
-  const userFinal = { ...user.toJSON() };
-  if (!userFinal.userName) {
-    // eslint-disable-next-line prefer-destructuring
-    userFinal.userName = userFinal.email.match(/^([^@]*)@/)[1];
-  }
-  if (!userFinal.name) {
-    // eslint-disable-next-line prefer-destructuring
-    userFinal.name = userFinal.email.match(/^([^@]*)@/)[1];
-  }
-  userFinal.mode = 'Trial Mode';
-
-  res.send(userFinal);
+  res.send(user);
 });
 
 const updateOne = catchAsync(async (req, res) => {

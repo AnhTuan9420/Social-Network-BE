@@ -27,7 +27,13 @@ const uploadAudio = catchAsync(async (req, res) => {
   }
 });
 
+const uploadCloudinary = catchAsync(async (req, res) => {
+  const data = await fileService.uploadToCloudinary(req.file);
+  res.status(httpStatus.CREATED).send(data);
+});
+
 module.exports = {
   uploadFile,
   uploadAudio,
+  uploadCloudinary,
 };

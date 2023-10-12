@@ -9,7 +9,7 @@ module.exports.fileValidation = (type) => async (req, res, next) => {
     validations = [body('audio').custom(checkAudioFile)];
   }
 
-  if (type === 'createImage') {
+  if (type === 'create') {
     validations = [body('file').custom(checkImageFile)];
   }
 

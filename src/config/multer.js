@@ -10,20 +10,6 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage, limits: { fileSize: 2097152 } });
+const upload = multer({ storage, limits: { fileSize: 20971520 } });
 
-const uploadAudio = multer({
-  storage,
-  limits: {
-    fileSize: 20971520, // 20 MB
-  },
-
-  fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(mp3|wav|flac|aac|ogg)$/)) {
-      return cb(new Error('Type of file is invalid'));
-    }
-    cb(undefined, true);
-  },
-});
-
-module.exports = { upload, uploadAudio };
+module.exports = { upload };

@@ -3,6 +3,40 @@ const fs = require('fs');
 const { Upload } = require('@aws-sdk/lib-storage');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { S3Client } = require('@aws-sdk/client-s3');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true,
+});
+
+const uploadToCloudinary = async (file) => {
+  const folder = 'PhotoVibe';
+  const uploadedImage = await cloudinary.uploader.upload(file.path, { folder, resource_type: 'auto' });
+
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  fs.unlink(file.path, (err) => {
+    // eslint-disable-next-line no-console
+    if (!err) console.log(`Deleted file: ${file.path}`);
+  });
+  return uploadedImage;
+};
+
+const deleteImageFromCloudinary = async (publicId) => {
+  try {
+    const result = await cloudinary.uploader.destroy(publicId);
+    // eslint-disable-next-line no-console
+    console.log('Image deleted from Cloudinary:', result);
+    return result;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('Error deleting image from Cloudinary:', error);
+    throw error;
+  }
+};
 
 const uploadToS3 = async (file, folder = 'uploads') => {
   const s3 = new S3Client({
@@ -54,4 +88,6 @@ const uploadToS3 = async (file, folder = 'uploads') => {
 
 module.exports = {
   uploadToS3,
+  uploadToCloudinary,
+  deleteImageFromCloudinary,
 };
