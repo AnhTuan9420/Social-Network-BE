@@ -1,17 +1,11 @@
 const { param, body } = require('express-validator');
 const baseValidation = require('./base.validation');
-const { checkImageFile } = require('./custom.validation');
 
 module.exports.validation = (type) => async (req, res, next) => {
   let validations = [];
 
   if (type === 'create') {
-    validations = [
-      body('fullName', 'fullName is required').notEmpty(),
-      body('major', 'major is required').notEmpty(),
-      body('experience', 'experience is required').notEmpty(),
-      body('file').custom(checkImageFile),
-    ];
+    validations = [body('content', 'content is required').notEmpty()];
   }
 
   if (type === 'getOne') {
