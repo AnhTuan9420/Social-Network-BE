@@ -15,11 +15,11 @@ const loginUserWithUsernameAndPassword = async (username, password, type) => {
   const user = await getByUsername(type, username);
 
   if (!user) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Account is not exist');
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Account or password is not exist!');
   }
 
   if (!(await user.isPasswordMatch(password))) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect username or password');
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect username or password!');
   }
 
   return user;
