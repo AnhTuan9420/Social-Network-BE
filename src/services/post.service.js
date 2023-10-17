@@ -13,7 +13,7 @@ const query = async (filter, options) => {
 };
 
 const getOne = async (filter) => {
-  return Post.findOne(filter);
+  return Post.findOne(filter).populate('userId');
 };
 
 const updateOne = async (filter, updateBody) => {

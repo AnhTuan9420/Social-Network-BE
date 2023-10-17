@@ -17,6 +17,7 @@ const create = catchAsync(async (req, res) => {
 const query = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['postId']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  options.populate = 'userId';
   const result = await commentService.query(filter, options);
   res.status(httpStatus.OK).send(result);
 });
