@@ -17,11 +17,37 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      required: false,
+      required: true,
       trim: true,
       private: true, // used by the toJSON plugin
     },
     fullName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    avatar: {
+      type: String,
+      required: false,
+      default: 'http://res.cloudinary.com/dbhalduvf/image/upload/v1697527084/PhotoVibe/rrxnjc2zrhzaxq1zj04a.png',
+      trim: true,
+    },
+    workspace: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    liveIn: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    phone: {
+      type: Number,
+      required: false,
+      trim: true,
+    },
+    study: {
       type: String,
       required: false,
       trim: true,

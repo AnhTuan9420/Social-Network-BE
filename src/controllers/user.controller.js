@@ -6,14 +6,14 @@ const catchAsync = require('../utils/catchAsync');
 const userService = require('../services/user.service');
 
 const query = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['name', 'role']);
+  const filter = pick(req.query, ['name']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await userService.query(filter, options);
   res.status(httpStatus.OK).send(result);
 });
 
 const getOne = catchAsync(async (req, res) => {
-  const user = await userService.getById(req.user.id);
+  const user = await userService.getById(req.query.userId);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
   }
