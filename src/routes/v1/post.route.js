@@ -14,7 +14,7 @@ router
 router
   .route('/:id')
   .get(auth(), validation('getOne'), postController.getOne)
-  .put(auth(), validation('updateOne'), postController.updateOne)
+  .put(auth(), upload.single('file'), validation('updateOne'), postController.updateOne)
   .delete(auth(), validation('deleteOne'), postController.deleteOne);
 
 module.exports = router;
