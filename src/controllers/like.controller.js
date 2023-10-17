@@ -22,6 +22,11 @@ const query = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(result);
 });
 
+const totaLikeOfPost = catchAsync(async (req, res) => {
+  const count = await likeService.count({ postId: req.query.postId });
+  res.status(httpStatus.OK).send({ postId: req.query.postId, totalLike: count });
+});
+
 const checkUserLike = catchAsync(async (req, res) => {
   const item = await likeService.getOne({ userId: req.user.id, postId: req.query.postId });
   if (!item) {
@@ -55,4 +60,5 @@ module.exports = {
   updateOne,
   deleteOne,
   checkUserLike,
+  totaLikeOfPost,
 };

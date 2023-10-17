@@ -31,7 +31,7 @@ const query = catchAsync(async (req, res) => {
 });
 
 const getOne = catchAsync(async (req, res) => {
-  const item = await postService.getOne({ userId: req.user.id, _id: req.params.id });
+  const item = await postService.getOne({ _id: req.params.id });
   if (!item) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
   }

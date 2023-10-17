@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.route('/').get(auth(), likeController.query).post(auth(), validation('create'), likeController.create);
 router.route('/checkUserLike').get(auth(), likeController.checkUserLike);
+router.route('/totalLike').get(auth(), likeController.totaLikeOfPost);
 
 router
   .route('/:id')

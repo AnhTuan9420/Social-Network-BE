@@ -15,6 +15,11 @@ const getOne = async (filter) => {
   return Like.findOne(filter);
 };
 
+const count = async (filter) => {
+  const result = await Like.countDocuments(filter);
+  return result;
+};
+
 const updateOne = async (filter, updateBody) => {
   const item = await getOne(filter);
   if (!item) {
@@ -40,4 +45,5 @@ module.exports = {
   getOne,
   updateOne,
   deleteOne,
+  count,
 };
