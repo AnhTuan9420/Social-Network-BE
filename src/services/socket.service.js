@@ -6,6 +6,14 @@ const connection = (socket) => {
     console.log(`User disconnect id is ${socket.id}`);
   });
 
+  socket.on('userConnected', (userId) => {
+    if (userId) {
+      socket.emit('userConnectedResponse', true); // Kết nối thành công
+    } else {
+      socket.emit('userConnectedResponse', false); // Kết nối không thành công
+    }
+  });
+
   // event on here
   socket.on('message', (msg) => {
     // eslint-disable-next-line no-console

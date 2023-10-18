@@ -10,14 +10,13 @@ const create = catchAsync(async (req, res) => {
   data.from = req.user.id;
   const item = await chatService.create(data);
   // eslint-disable-next-line no-undef
-  _io.to([data.from, data.to]).emit('message', { from: req.user.id, message: data.content });
+  _io.to([data.from, data.to]).emit('message', item);
   res.status(httpStatus.CREATED).send(item);
 });
 
 const query = catchAsync(async (req, res) => {
   const filter = matchFilter(req.user.id, req.query.to);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-
   const result = await chatService.query(filter, options);
   res.status(httpStatus.OK).send(result);
 });
@@ -36,7 +35,7 @@ const updateOne = catchAsync(async (req, res) => {
 });
 
 const deleteOne = catchAsync(async (req, res) => {
-  await chatService.deleteOne({ userId: req.user.id, _id: req.params.id });
+  await chatService.deleteOne({ _id: req.params.id });
   res.status(httpStatus.NO_CONTENT).send();
 });
 
