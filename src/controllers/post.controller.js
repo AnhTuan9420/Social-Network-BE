@@ -3,6 +3,7 @@ const ApiError = require('../utils/ApiError');
 const pick = require('../utils/pick');
 const catchAsync = require('../utils/catchAsync');
 const postService = require('../services/post.service');
+const likeService = require('../services/like.service');
 const fileService = require('../services/file.service');
 
 const create = catchAsync(async (req, res) => {
@@ -45,6 +46,7 @@ const updateOne = catchAsync(async (req, res) => {
 
 const deleteOne = catchAsync(async (req, res) => {
   const response = await postService.deleteOne({ userId: req.user.id, _id: req.params.id });
+  await likeService.deleteOne({ postId: req.params.id });
   res.status(httpStatus.NO_CONTENT).send(response);
 });
 
