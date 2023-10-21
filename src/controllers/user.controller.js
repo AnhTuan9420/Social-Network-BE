@@ -6,8 +6,16 @@ const catchAsync = require('../utils/catchAsync');
 const userService = require('../services/user.service');
 
 const query = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['name']);
+  const filter = pick(req.query, ['fullName']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
+
+  if (filter.fullName) {
+    const trimmedSearch = filter.fullName.trim();
+    // eslint-disable-next-line security/detect-non-literal-regexp
+    const regex = new RegExp(trimmedSearch, 'i');
+    filter.fullName = { $regex: regex };
+  }
+
   const result = await userService.query(filter, options);
   res.status(httpStatus.OK).send(result);
 });

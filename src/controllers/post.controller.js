@@ -24,9 +24,17 @@ const create = catchAsync(async (req, res) => {
 });
 
 const query = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['userId']);
+  const filter = pick(req.query, ['userId', 'title']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   options.populate = 'userId';
+
+  if (filter.title) {
+    const trimmedSearch = filter.title.trim();
+    // eslint-disable-next-line security/detect-non-literal-regexp
+    const regex = new RegExp(trimmedSearch, 'i');
+    filter.title = { $regex: regex };
+  }
+
   const result = await postService.query(filter, options);
   res.status(httpStatus.OK).send(result);
 });
