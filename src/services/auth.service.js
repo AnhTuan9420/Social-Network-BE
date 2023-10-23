@@ -1,5 +1,7 @@
 const httpStatus = require('http-status');
+const bcrypt = require('bcryptjs');
 const tokenService = require('./token.service');
+const userService = require('./user.service');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
 const { getToken, getLastToken } = require('./helper/token_helper.service');
@@ -83,14 +85,19 @@ const checkVerify = async (input) => {
   return tokenVerify && String(tokenVerify.user) === String(user.id);
 };
 
-const resetPassword = async (input) => {
-  const isVerify = await checkVerify(input);
-  if (!isVerify) {
-    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Data is invalid');
+const resetPassword = async (reqBody, userId) => {
+  const isUser = await userService.getById(userId);
+  if (!isUser) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
 
-  const user = await getByEmail(input.userType, input.email);
-  await resetPasswordUpdate(input.userType, user, input.password);
+  const isPasswordMatch = await bcrypt.compare(reqBody.password, isUser.password);
+
+  if (!isPasswordMatch) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Wrong current password');
+  }
+
+  await resetPasswordUpdate(isUser, reqBody.newPassword);
 };
 
 const verifyEmail = async (verifyEmailToken, userType) => {

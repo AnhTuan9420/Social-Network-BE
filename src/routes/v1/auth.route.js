@@ -1,4 +1,5 @@
 const express = require('express');
+const auth = require('../../middlewares/auth');
 const { authValidation } = require('../../validations/auth.validation');
 const authUserController = require('../../controllers/auth_user.controller');
 const authAdminController = require('../../controllers/auth_admin.controller');
@@ -12,7 +13,7 @@ router.post('/user/register', authValidation('register'), authUserController.reg
 router.post('/user/login', authValidation('login'), authUserController.login);
 router.post('/user/logout', authValidation('logoutAndRefreshTokens'), authUserController.logout);
 router.post('/user/refresh-tokens', authValidation('logoutAndRefreshTokens'), authUserController.refreshTokens);
-router.post('/user/reset-password', authValidation('resetPassword'), authUserController.resetPassword);
+router.post('/user/reset-password', auth(), authValidation('resetPassword'), authUserController.resetPassword);
 
 /**
  * AUTH ADMIN APIs

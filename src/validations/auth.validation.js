@@ -54,15 +54,10 @@ module.exports.authValidation =
     // reset password
     if (type === 'resetPassword') {
       dataValidate = [
-        body('email', 'Email is required').notEmpty(),
-        body('email', 'Email is invalid').isEmail(),
-        body('verifyCode', 'verifyCode is required').notEmpty(),
-        body('password', 'Password is required').notEmpty(),
-        body('password', 'Password must be between 6 and 20 characters, contain at least one letter and one number').custom(
-          password
-        ),
-        body('confirmPassword', 'Password is required').notEmpty(),
-        body('confirmPassword', 'Password not match').equals(req.body.password),
+        body('password', 'Current Password is required').notEmpty(),
+        body('newPassword', 'New Password is required').notEmpty(),
+        body('confirmPassword', 'Confirm Password is required').notEmpty(),
+        body('confirmPassword', 'Confirm Password not match').equals(req.body.newPassword),
       ];
     }
 

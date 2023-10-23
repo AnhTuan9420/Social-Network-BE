@@ -27,8 +27,8 @@ const verifyEmailUpdate = async (userType, userId) => {
   }
 };
 
-const resetPasswordUpdate = async (userType, user, newPassword) => {
-  if (userType === 'user') {
+const resetPasswordUpdate = async (user, newPassword) => {
+  if (user) {
     await userService.updateById(user.id, { password: newPassword });
     await Token.deleteMany({ user: user.id, type: tokenTypes.RESET_PASSWORD });
   }
