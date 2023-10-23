@@ -10,8 +10,9 @@ const create = catchAsync(async (req, res) => {
   const dataImage = await fileService.uploadToCloudinary(req.file);
 
   if (!dataImage) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Error');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Upload image fail!');
   }
+
   const dataSubmit = {
     title: req.body.title,
     image: dataImage.url,

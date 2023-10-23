@@ -29,7 +29,12 @@ const userSchema = mongoose.Schema(
     avatar: {
       type: String,
       required: false,
-      default: 'http://res.cloudinary.com/dbhalduvf/image/upload/v1697527084/PhotoVibe/rrxnjc2zrhzaxq1zj04a.png',
+      default: null,
+      trim: true,
+    },
+    avatar_public_id: {
+      type: String,
+      default: null,
       trim: true,
     },
     workspace: {

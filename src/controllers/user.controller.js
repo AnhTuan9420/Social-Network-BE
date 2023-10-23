@@ -29,7 +29,7 @@ const getOne = catchAsync(async (req, res) => {
 });
 
 const updateOne = catchAsync(async (req, res) => {
-  const user = await userService.updateById(req.user.id, req.body);
+  const user = await userService.updateById(req.user.id, req.body, req.file);
   res.status(httpStatus.OK).send(user);
 });
 

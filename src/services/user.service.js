@@ -1,5 +1,6 @@
 const httpStatus = require('http-status');
 const User = require('../models/user.model');
+const fileService = require('./file.service');
 const ApiError = require('../utils/ApiError');
 
 const create = async (userBody) => {
@@ -26,14 +27,25 @@ const getByUsername = async (username) => {
   return User.findOne({ username });
 };
 
-const updateById = async (id, updateBody) => {
+const updateById = async (id, updateBody, file) => {
   const user = await getById(id);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
   }
-  if (updateBody.email && (await User.isEmailTaken(updateBody.email, id))) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Already exist');
+  if (file && user.avatar_public_id) {
+    await fileService.deleteImageFromCloudinary(user.avatar_public_id);
   }
+  const dataImage = await fileService.uploadToCloudinary(file);
+
+  if (!dataImage) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Upload image fail!');
+  }
+
+  // eslint-disable-next-line no-param-reassign
+  updateBody.avatar = dataImage.url;
+  // eslint-disable-next-line no-param-reassign
+  updateBody.avatar_public_id = dataImage.public_id;
+
   Object.assign(user, updateBody);
   await user.save();
   return user;
