@@ -49,7 +49,7 @@ const getOne = catchAsync(async (req, res) => {
 });
 
 const updateOne = catchAsync(async (req, res) => {
-  const card = await postService.updateOne({ userId: req.user.id, _id: req.params.id }, req.body);
+  const card = await postService.updateOne({ userId: req.user.id, _id: req.params.id }, req.body, req.file);
   res.status(httpStatus.OK).send(card);
 });
 
