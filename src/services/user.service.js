@@ -35,16 +35,21 @@ const updateById = async (id, updateBody, file) => {
   if (file && user.avatar_public_id) {
     await fileService.deleteImageFromCloudinary(user.avatar_public_id);
   }
-  const dataImage = await fileService.uploadToCloudinary(file);
 
-  if (!dataImage) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Upload image fail!');
+  let dataImage;
+  if (file) {
+    dataImage = await fileService.uploadToCloudinary(file);
+    if (!dataImage.url) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Upload image fail!');
+    }
   }
 
-  // eslint-disable-next-line no-param-reassign
-  updateBody.avatar = dataImage.url;
-  // eslint-disable-next-line no-param-reassign
-  updateBody.avatar_public_id = dataImage.public_id;
+  if (dataImage) {
+    // eslint-disable-next-line no-param-reassign
+    updateBody.avatar = dataImage.url;
+    // eslint-disable-next-line no-param-reassign
+    updateBody.avatar_public_id = dataImage.public_id;
+  }
 
   Object.assign(user, updateBody);
   await user.save();
