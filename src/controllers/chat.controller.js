@@ -17,6 +17,11 @@ const create = catchAsync(async (req, res) => {
 const query = catchAsync(async (req, res) => {
   const filter = matchFilter(req.user.id, req.query.to);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  options.populateSelect = {
+    path: 'from',
+    select: 'from.avatar',
+  };
+
   const result = await chatService.query(filter, options);
   res.status(httpStatus.OK).send(result);
 });

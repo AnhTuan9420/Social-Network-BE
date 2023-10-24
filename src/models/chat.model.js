@@ -6,11 +6,13 @@ const chatSchema = mongoose.Schema(
     from: {
       type: mongoose.Schema.Types.ObjectId,
       required: false,
+      ref: 'User',
       trim: true,
     },
     to: {
       type: mongoose.Schema.Types.ObjectId,
       required: false,
+      ref: 'User',
       trim: true,
     },
     content: {
