@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "mewell-api",
+      "name": "photovibe-api",
       "script": "src/index.js",
       "instances": 1,
       "autorestart": true,
