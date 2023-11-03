@@ -1,0 +1,25 @@
+name: Auto Deploy
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: 22
+          script: | # run with multiple script
+            cd /var/www/social-network/Social-Network-BE
+            git reset --hard
+            ${{ secrets.GIT_PULL }}
+            npm install
+            pm2 restart photovibe-api
